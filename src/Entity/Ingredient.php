@@ -16,7 +16,7 @@ class Ingredient
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    #[Assert\Lnegth(
+    #[Assert\Length(
         min: 2,
         max: 50,
         minMessage: "Votre message doit comporter au moins 2 caractères",

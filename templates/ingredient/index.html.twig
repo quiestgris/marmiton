@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello IngredientController!
+{% endblock %}
+{% block head %}
+	<link rel="stylesheet" href="{{asset("styles/ingredients/styles.css")}}">
+{% endblock %}
+
+{% block body %}
+    {% if not ingredients is same as ([]) %}
+        <h1>Pas d'ingredients</h1>
+
+
+    {% else %}
+        
+	<div class="example-wrapper">
+		<h1>
+			Les ingrédients
+		</h1>
+
+		<table border="1" class="ingredients">
+			<thead>
+				<tr>
+					<td>Id</td>
+					<td>Nom</td>
+					<td>Prix</td>
+					<td>Date</td>
+				</tr>
+			</thead>
+			<tbody>
+
+					<div class="count">
+						<h1>Total:
+							{{ingredients.getTotalItemCount + 1}}</h1>
+					</div>
+					{% for ingredient in ingredients %}
+						<tr>
+							<td>{{ingredient.id}}</td>
+							<td>{{ingredient.name}}</td>
+							<td>{{ingredient.price}}</td>
+							<td>{{ingredient.createdAt|date("d/m/Y")}}</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</tbody>
+		</table>
+		<div class="pagination">
+			{{knp_pagination_render(ingredients)}}
+		</div>
+	{% endif %}
+</div>{% endblock %}
