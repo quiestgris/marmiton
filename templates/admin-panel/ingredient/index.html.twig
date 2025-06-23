@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin-panel-base.html.twig' %}
 
 {% block title %}Hello IngredientController!
 {% endblock %}
@@ -7,9 +7,9 @@
 {% endblock %}
 
 {% block body %}
-    {% if not ingredients is same as ([]) %}
+	<a href="{{path("app_ingredients_create")}}">Ajouter un ingrédient</a>
+    {% if ingredients is same as ([]) %}
         <h1>Pas d'ingredients</h1>
-
 
     {% else %}
         
@@ -39,6 +39,7 @@
 							<td>{{ingredient.name}}</td>
 							<td>{{ingredient.price}}</td>
 							<td>{{ingredient.createdAt|date("d/m/Y")}}</td>
+							<td><a href="{{path("app_ingredients_edit", {id: ingredient.id})}}">Modifier</a></td>
 						</tr>
 					{% endfor %}
 				</tbody>

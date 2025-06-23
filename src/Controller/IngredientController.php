@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Ingredient;
+use App\Form\IngredientTypeForm;
 use App\Repository\IngredientRepository;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,16 +19,64 @@ use Symfony\Component\Routing\Attribute\Route;
  */
 final class IngredientController extends AbstractController
 {
-    #[Route('/ingredients', name: 'app_ingredients', methods: ["GET"])]
+    #[Route('ingredients/show', name: 'app_ingredients', methods: ["GET"])]
     public function index(IngredientRepository $ingredientRepository, Request $request, PaginatorInterface $paginator, EntityManagerInterface $em): Response
     {
         $ingredients = $paginator->paginate($ingredientRepository->findAll(),
         $request->query->getInt("page", 1), 15);
 
-        return $this->render('ingredient/index.html.twig', [
+        return $this->render('admin-panel/ingredient/index.html.twig', [
             'ingredients' => $ingredients,
         ]);
     }
-}
+
+    #[Route('ingredients/new', name: 'app_ingredients_create', methods: ["GET","POST"])]
+    public function new(Request $request, EntityManagerInterface $manager) :Response {
+
+        $ingredient = new Ingredient();
+        $form = $this->createForm(IngredientTypeForm::class, $ingredient);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $ingredient = $form->getData();
+
+            $manager->persist($ingredient);
+            $manager->flush();
+
+            $this->addFlash(
+                "success",
+                "Votre ingrédient a été créé avec succès"
+            );
+            return $this->redirectToRoute("app_ingredients");
+        }
+
+        return $this->render("admin-panel/ingredient/new.html.twig", [
+            "form" => $form->createView()
+        ]);
+    }
+    #[Route('ingredients/edit/{id}', name: 'app_ingredients_edit', methods: ["GET","POST"])]
+    public function edit(Request $request, EntityManagerInterface $manager, Ingredient $ingredient) :Response {
+
+        
+        $form = $this->createForm(IngredientTypeForm::class, $ingredient);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $manager->flush();
+
+            $this->addFlash(
+                "success",
+                "Votre ingrédient a été modifié avec succès"
+            );
+            return $this->redirectToRoute("app_ingredients", [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render("admin-panel/ingredient/edit.html.twig", [
+            "form" => $form->createView(),
+            "ingredient" => $ingredient
+        ]);
+    }}
 
 

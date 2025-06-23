@@ -6,10 +6,13 @@ use App\Repository\IngredientRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Monolog\DateTimeImmutable;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: IngredientRepository::class)]
+#[UniqueEntity("name")]
 class Ingredient
 {
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
