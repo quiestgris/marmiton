@@ -40,6 +40,7 @@
 							<td>{{ingredient.price}}</td>
 							<td>{{ingredient.createdAt|date("d/m/Y")}}</td>
 							<td><a href="{{path("app_ingredients_edit", {id: ingredient.id})}}">Modifier</a></td>
+							<td><a href="{{path("app_ingredients_delete", {id: ingredient.id})}}">Supprimer</a></td>
 						</tr>
 					{% endfor %}
 				</tbody>

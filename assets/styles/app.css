@@ -3,3 +3,11 @@ body {
     width: 100vw;
     box-sizing: border-box;
 }
+
+.form-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 20px;
+    font-size: 20px;
+}

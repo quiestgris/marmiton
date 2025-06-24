@@ -1,0 +1,62 @@
+{% extends 'admin-panel-base.html.twig' %}
+
+{% block title %}
+{% endblock %}
+{% block head %}
+	<link rel="stylesheet" href="{{asset("styles/ingredients/styles.css")}}">
+{% endblock %}
+
+{% block body %}
+    {% if not recipes.items is same as ([]) %}
+        <h1>Ne pas de recettes</h1>
+		{{recipes.ite}}
+    {% else %}
+        
+	<div class="example-wrapper">
+		<h1>
+			Les recettes
+		</h1>
+
+		<table border="1" class="ingredients">
+			<thead>
+				<tr>
+					<td>Id</td>
+					<td>Nom</td>
+					<td>Time</td>
+					<td>Nombre de gens</td>
+					<td>Difficulté</td>
+					<td>Prix</td>
+					<td>Préféré</td>
+					<td>Créée le</td>
+					<td>Modifiée le</td>
+				</tr>
+			</thead>
+			<tbody>
+
+					<div class="count">
+						<h1>Total:
+							{{recipes.getTotalItemCount + 1}}</h1>
+					</div>
+					{% for recipe in recipes %}
+						<tr>
+							<td>{{recipe.id}}</td>
+							<td>{{recipe.name}}</td>
+							<td>{{recipe.time}}</td>
+							<td>{{recipe.peopleNb}}</td>
+							<td>{{recipe.description}}</td>
+							<td>{{recipe.price}}</td>
+							<td>{{recipe.isFavorite}}</td>
+							<td>{{recipe.createdAt|date("d/m/Y")}}</td>
+							<td>{{recipe.updatedAt|date("d/m/Y")}}</td>
+							<td><a href="{{path("app_recipes_edit", {id: recipe.id})}}">Modifier</a></td>
+							<td><a href="{{path("app_recipes_delete", {id: recipe.id})}}">Supprimer</a></td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</tbody>
+		</table>
+		<div class="pagination">
+			{{knp_pagination_render(recipes)}}
+		</div>
+	{% endif %}
+</div>{% endblock %}
