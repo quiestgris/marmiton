@@ -2,16 +2,20 @@
 
 namespace App\Form;
 
+use App\Entity\Ingredient;
 use App\Entity\Recipe;
-use Doctrine\DBAL\Types\FloatType;
-use Doctrine\DBAL\Types\SmallIntType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\RangeType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType as TypeTextType;
-use Symfony\Component\Form\Extension\Core\Type\TimeType;
+use Symfony\Component\Form\FormBuilderInterface;
+use App\Repository\IngredientRepository;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
@@ -34,7 +38,7 @@ class RecipeTypeForm extends AbstractType
                     new Assert\NotBlank()
                 ]
             ])
-            ->add('time', NumberType::class, [
+            ->add('time', IntegerType::class, [
                 "attr" => [
                     "class" => "form-item"
                 ],
@@ -47,7 +51,7 @@ class RecipeTypeForm extends AbstractType
                     new Assert\NotBlank()
                 ]
             ])
-            ->add('people_nb', NumberType::class, [
+            ->add('people_nb', IntegerType::class, [
                 "attr" => [
                     "class" => "form-item"
                 ],
@@ -114,7 +118,7 @@ class RecipeTypeForm extends AbstractType
             ])
             ->add("ingredients", EntityType::class,[
                 "label" => "Les ingrédients",
-                'label_attre' => [
+                'label_attr' => [
                     'class' => 'form-label',
                 ],
                 "class" => Ingredient::class,
