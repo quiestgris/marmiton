@@ -7,9 +7,8 @@
 {% endblock %}
 
 {% block body %}
-    {% if not recipes.items is same as ([]) %}
+    {% if recipes.items is same as ([]) %}
         <h1>Ne pas de recettes</h1>
-		{{recipes.ite}}
     {% else %}
         
 	<div class="example-wrapper">
@@ -42,9 +41,10 @@
 							<td>{{recipe.id}}</td>
 							<td>{{recipe.name}}</td>
 							<td>{{recipe.time}}</td>
-							<td>{{recipe.peopleNb}}</td>
+							<td>{{recipe.peopleNb is same as (null) ? "Non renseigné" : recipe.peopleNb}}</td>
+							<td>{{recipe.difficulty is same as (null) ? "Non renseigné" : recipe.difficulty}}</td>
 							<td>{{recipe.description}}</td>
-							<td>{{recipe.price}}</td>
+							<td>{{recipe.price is same as (null) ? "Non renseigné" : recipe.price}}</td>
 							<td>{{recipe.isFavorite}}</td>
 							<td>{{recipe.createdAt|date("d/m/Y")}}</td>
 							<td>{{recipe.updatedAt|date("d/m/Y")}}</td>

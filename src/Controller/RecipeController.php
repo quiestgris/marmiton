@@ -40,9 +40,6 @@ final class RecipeController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             $recipe = $form->getData();
 
-            $recipe->setUpdatedAt(new \DateTimeImmutable());
-
-            dd($recipe);
             $manager->persist($recipe);
             $manager->flush();
 
@@ -57,50 +54,50 @@ final class RecipeController extends AbstractController
             "form" => $form->createView()
         ]);
     }
-    // #[Route('ingredients/edit/{id}', name: 'app_recipes_edit', methods: ["GET","POST"])]
-    // public function edit(Request $request, EntityManagerInterface $manager, Ingredient $ingredient) :Response {
+    #[Route('ingredients/edit/{id}', name: 'app_recipes_edit', methods: ["GET","POST"])]
+    public function edit(Request $request, EntityManagerInterface $manager, Ingredient $ingredient) :Response {
 
         
-    //     $form = $this->createForm(IngredientTypeForm::class, $ingredient);
+        $form = $this->createForm(IngredientTypeForm::class, $ingredient);
 
-    //     $form->handleRequest($request);
+        $form->handleRequest($request);
 
-    //     if($form->isSubmitted() && $form->isValid()) {
-    //         $manager->flush();
+        if($form->isSubmitted() && $form->isValid()) {
+            $manager->flush();
 
-    //         $this->addFlash(
-    //             "success",
-    //             "Votre ingrédient a été modifié avec succès"
-    //         );
-    //         return $this->redirectToRoute("app_ingredients", [], Response::HTTP_SEE_OTHER);
-    //     }
+            $this->addFlash(
+                "success",
+                "Votre ingrédient a été modifié avec succès"
+            );
+            return $this->redirectToRoute("app_ingredients", [], Response::HTTP_SEE_OTHER);
+        }
 
-    //     return $this->render("admin-panel/ingredient/edit.html.twig", [
-    //         "form" => $form->createView(),
-    //         "ingredient" => $ingredient
-    //     ]);
-    // }
-    // #[Route('ingredients/delete/{id}', name: 'app_recipes_delete', methods: ["GET","POST"])]
-    // public function delete(Request $request, EntityManagerInterface $manager, Ingredient $ingredient) :Response {
+        return $this->render("admin-panel/ingredient/edit.html.twig", [
+            "form" => $form->createView(),
+            "ingredient" => $ingredient
+        ]);
+    }
+    #[Route('ingredients/delete/{id}', name: 'app_recipes_delete', methods: ["GET","POST"])]
+    public function delete(Request $request, EntityManagerInterface $manager, Ingredient $ingredient) :Response {
 
-    //     if(!$ingredient) {
-    //         $this->addFlash(
-    //             "success",
-    //             "Votre ingrédient n'a pas été trouvé");
-    //         return $this->redirectToRoute("app_ingredients", [], Response::HTTP_SEE_OTHER);
-    //     }
-    //     else {
-    //         $manager->remove($ingredient);
-    //         $manager->flush();
+        if(!$ingredient) {
+            $this->addFlash(
+                "success",
+                "Votre ingrédient n'a pas été trouvé");
+            return $this->redirectToRoute("app_ingredients", [], Response::HTTP_SEE_OTHER);
+        }
+        else {
+            $manager->remove($ingredient);
+            $manager->flush();
 
-    //         $this->addFlash(
-    //             "success",
-    //             "Votre ingrédient a été supprimé avec succès");
+            $this->addFlash(
+                "success",
+                "Votre ingrédient a été supprimé avec succès");
 
-    //         return $this->redirectToRoute("app_ingredients", [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute("app_ingredients", [], Response::HTTP_SEE_OTHER);
             
-    //     }
-    // }
+        }
+    }
 }
 
 

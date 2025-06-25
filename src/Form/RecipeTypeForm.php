@@ -60,7 +60,7 @@ class RecipeTypeForm extends AbstractType
                     new Assert\LessThan(200)
                 ]
             ])
-            ->add('difficulty', NumberType::class, [
+            ->add('difficulty', RangeType::class, [
                 "attr" => [
                     "class" => "form-item"
                 ],
@@ -73,7 +73,7 @@ class RecipeTypeForm extends AbstractType
                     new Assert\LessThan(100)
                 ]
             ])
-            ->add('description', TypeTextType::class, [
+            ->add('description', TextareaType::class, [
                 "attr" => [
                     "class" => "form-item"
                 ],
@@ -86,7 +86,7 @@ class RecipeTypeForm extends AbstractType
                     new Assert\NotBlank()
                 ]
             ])
-            ->add('price', NumberType::class, [
+            ->add('price', MoneyType::class, [
                 "attr" => [
                     "class" => "form-item"
                 ],
@@ -99,7 +99,7 @@ class RecipeTypeForm extends AbstractType
                     new Assert\LessThan(128)
                 ]
             ])
-            ->add('is_favorite', NumberType::class, [
+            ->add('is_favorite', CheckBoxType::class, [
                 "attr" => [
                     "class" => "form-item"
                 ],
@@ -111,6 +111,20 @@ class RecipeTypeForm extends AbstractType
                     new Assert\Positive(),
                     new Assert\LessThan(128)
                 ]
+            ])
+            ->add("ingredients", EntityType::class,[
+                "label" => "Les ingrédients",
+                'label_attre' => [
+                    'class' => 'form-label',
+                ],
+                "class" => Ingredient::class,
+                'query_builder' => function (IngredientRepository $r) {
+                    return $r->createQueryBuilder('i')
+                            ->orderBy('i.name',"ASC");
+                },
+                'choice_label' => 'name',
+                'multiple' => 'true',
+                'expanded' => 'true',
             ])
             ->add("submit", SubmitType::class, [
                 "attr" => [

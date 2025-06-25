@@ -1,1 +1,1 @@
-https://github.com/quiestgris/marmiton
+https://github.com/quiestgris/marmiton.git
