@@ -21,6 +21,17 @@ a {
     padding: 12px;
     
 }
+.btn {
+    display: block;
+    padding: 12px;
+    background-color: rgb(155, 99, 15);
+    color: white;
+    font-size: 24px;
+    border: none;
+    text-wrap: nowrap;
+    cursor: pointer;
+}
+
 .delete-btn {
     background-color:  red;
     color: white;

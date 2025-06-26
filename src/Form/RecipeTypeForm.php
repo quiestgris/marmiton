@@ -59,6 +59,7 @@ class RecipeTypeForm extends AbstractType
                 "label_attr" => [
                     "class" => "form-label"
                 ],
+                "required" => false,
                 "constraints" => [
                     new Assert\Positive(),
                     new Assert\LessThan(200)
@@ -74,6 +75,7 @@ class RecipeTypeForm extends AbstractType
                 "label_attr" => [
                     "class" => "form-label"
                 ],
+                "required" => false,
                 "constraints" => [
                     new Assert\Positive(),
                     new Assert\LessThan(6)
@@ -96,6 +98,7 @@ class RecipeTypeForm extends AbstractType
                 "attr" => [
                     "class" => "form-item"
                 ],
+                "required" => false,
                 "label" => "Prix",
                 "label_attr" => [
                     "class" => "form-label"
@@ -132,7 +135,7 @@ class RecipeTypeForm extends AbstractType
             ])
             ->add("submit", SubmitType::class, [
                 "attr" => [
-                    "class" => "form-btn"
+                    "class" => "btn"
                 ],
                 "label" => "Créer une recette"
             ])
