@@ -66,7 +66,9 @@ class RecipeTypeForm extends AbstractType
             ])
             ->add('difficulty', RangeType::class, [
                 "attr" => [
-                    "class" => "form-item"
+                    "class" => "form-item",
+                    "min" => "1",
+                    "max" => "5",
                 ],
                 "label" => "Difficulté",
                 "label_attr" => [
@@ -74,7 +76,7 @@ class RecipeTypeForm extends AbstractType
                 ],
                 "constraints" => [
                     new Assert\Positive(),
-                    new Assert\LessThan(100)
+                    new Assert\LessThan(6)
                 ]
             ])
             ->add('description', TextareaType::class, [
@@ -105,16 +107,14 @@ class RecipeTypeForm extends AbstractType
             ])
             ->add('is_favorite', CheckBoxType::class, [
                 "attr" => [
-                    "class" => "form-item"
+                    "class" => "form-item",
                 ],
+                "required" => false,
                 "label" => "Si préféré",
                 "label_attr" => [
                     "class" => "form-label"
                 ],
-                "constraints" => [
-                    new Assert\Positive(),
-                    new Assert\LessThan(128)
-                ]
+                
             ])
             ->add("ingredients", EntityType::class,[
                 "label" => "Les ingrédients",

@@ -59,8 +59,8 @@ class Recipe
     #[Assert\LessThan(1001)]
     private ?float $price = null;
 
-    #[ORM\Column(type: Types::BOOLEAN)]
-    private ?int $is_favorite = null;
+    #[ORM\Column]
+    private ?bool $is_favorite = null;
 
     #[ORM\Column]
     #[Assert\NotNull]
@@ -91,9 +91,7 @@ class Recipe
         return $this;
     }
 
-     /**
-     * @return Collection<int, Ingredient>
-     */
+     
     public function getIngredients(): Collection
     {
         return $this->ingredients;
@@ -173,12 +171,12 @@ class Recipe
         return $this;
     }
 
-    public function getIsFavorite(): ?int
+    public function getIsFavorite(): ?bool
     {
         return $this->is_favorite;
     }
 
-    public function setIsFavorite(int $is_favorite): static
+    public function setIsFavorite(bool $is_favorite): static
     {
         $this->is_favorite = $is_favorite;
 

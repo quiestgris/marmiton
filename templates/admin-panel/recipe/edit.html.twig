@@ -1,0 +1,86 @@
+{% extends "admin-panel-base.html.twig" %}
+{% block body %}
+	<div>
+		<h1>Modification de la recette</h1>
+		<p>Nom:
+			{{recipe.name}}</p>
+		<p>Temps:
+			{{recipe.time}}</p>
+		<p>Nombre de gens:
+			{{recipe.peopleNb is same as (null) ? "Non renseigné" : recipe.peopleNb}}</p>
+		<p>Difficulté:
+			{{recipe.difficulty is same as (null) ? "Non renseigné" : recipe.difficulty}}</p>
+		<p>Déscription:
+			{{recipe.description}}</p>
+		<p>Recette:
+			{{recipe.price is same as (null) ? "Non renseigné" : recipe.price}}</p>
+		<p>Si préférée:
+			{{recipe.isFavorite is same as (0) ? "Oui" : "Non"}}</p>
+        <p>Ingrédients</p>
+		<ul>
+			{% for ingredient in recipe.ingredients %}
+				<li>{{ingredient.name}}</li>
+			{% endfor %}
+		</ul>
+		<div>
+			{% for message in app.flashes %}
+				<div class="alert-success">
+					{{message}}
+				</div>
+			{% endfor %}
+			{{form_start(form)}}
+			<div class="form-group">
+				{{form_label(form.name)}}
+				{{form_widget(form.name)}}
+				<div class="form-error">
+					{{form_errors(form.name)}}
+				</div>
+			</div>
+			<div class="form-group">
+				{{form_label(form.time)}}
+				{{form_widget(form.time)}}
+				<div class="form-error">
+					{{form_errors(form.time)}}
+				</div>
+			</div>
+			<div class="form-group">
+				{{form_label(form.people_nb)}}
+				{{form_widget(form.people_nb)}}
+				<div class="form-error">
+					{{form_errors(form.people_nb)}}
+				</div>
+			</div>
+			<div class="form-group">
+				{{form_label(form.difficulty)}}
+				{{form_widget(form.difficulty)}}
+				<div class="form-error">
+					{{form_errors(form.difficulty)}}
+				</div>
+			</div>
+			<div class="form-group">
+				{{form_label(form.description)}}
+				{{form_widget(form.description)}}
+				<div class="form-error">
+					{{form_errors(form.description)}}
+				</div>
+			</div>
+			<div class="form-group">
+				{{form_label(form.price)}}
+				{{form_widget(form.price)}}
+				<div class="form-error">
+					{{form_errors(form.price)}}
+				</div>
+			</div>
+			<div class="form-group">
+				{{form_label(form.is_favorite)}}
+				{{form_widget(form.is_favorite)}}
+				<div class="form-error">
+					{{form_errors(form.is_favorite)}}
+				</div>
+			</div>
+			<div class="form-group">
+				<button type="submit" class="btn">Modifier la recette</button>
+			</div>
+			{{form_end(form)}}
+		</div>
+	{% endblock %}

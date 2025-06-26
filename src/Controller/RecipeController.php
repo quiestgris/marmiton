@@ -29,7 +29,7 @@ final class RecipeController extends AbstractController
         ]);
     }
 
-    #[Route('recipes/new', name: 'app_recipes_create', methods: ["GET","PUT"])]
+    #[Route('recipes/new', name: 'app_recipes_create', methods: ["GET","POST"])]
     public function new(Request $request, EntityManagerInterface $manager) :Response {
 
         $recipe = new Recipe();
@@ -54,11 +54,11 @@ final class RecipeController extends AbstractController
             "form" => $form->createView()
         ]);
     }
-    #[Route('ingredients/edit/{id}', name: 'app_recipes_edit', methods: ["GET","POST"])]
-    public function edit(Request $request, EntityManagerInterface $manager, Ingredient $ingredient) :Response {
+    #[Route('recipes/edit/{id}', name: 'app_recipes_edit', methods: ["GET","POST"])]
+    public function edit(Request $request, EntityManagerInterface $manager, Recipe $recipe) :Response {
 
         
-        $form = $this->createForm(IngredientTypeForm::class, $ingredient);
+        $form = $this->createForm(RecipeTypeForm::class, $recipe);
 
         $form->handleRequest($request);
 
@@ -69,33 +69,32 @@ final class RecipeController extends AbstractController
                 "success",
                 "Votre ingrédient a été modifié avec succès"
             );
-            return $this->redirectToRoute("app_ingredients", [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute("app_recipes", [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render("admin-panel/ingredient/edit.html.twig", [
+        return $this->render("admin-panel/recipe/edit.html.twig", [
             "form" => $form->createView(),
-            "ingredient" => $ingredient
+            "recipe" => $recipe
         ]);
     }
-    #[Route('ingredients/delete/{id}', name: 'app_recipes_delete', methods: ["GET","POST"])]
-    public function delete(Request $request, EntityManagerInterface $manager, Ingredient $ingredient) :Response {
+    #[Route('recipes/delete/{id}', name: 'app_recipes_delete', methods: ["GET","POST"])]
+    public function delete(Request $request, EntityManagerInterface $manager, Recipe $recipe) :Response {
 
-        if(!$ingredient) {
+        if(!$recipe) {
             $this->addFlash(
                 "success",
                 "Votre ingrédient n'a pas été trouvé");
             return $this->redirectToRoute("app_ingredients", [], Response::HTTP_SEE_OTHER);
         }
         else {
-            $manager->remove($ingredient);
+            $manager->remove($recipe);
             $manager->flush();
 
             $this->addFlash(
                 "success",
                 "Votre ingrédient a été supprimé avec succès");
 
-            return $this->redirectToRoute("app_ingredients", [], Response::HTTP_SEE_OTHER);
-            
+            return $this->redirectToRoute("app_recipes", [], Response::HTTP_SEE_OTHER);
         }
     }
 }

@@ -21,11 +21,13 @@
 				<tr>
 					<td>Id</td>
 					<td>Nom</td>
-					<td>Time</td>
+					<td>Temps</td>
 					<td>Nombre de gens</td>
 					<td>Difficulté</td>
+					<td>Description</td>
 					<td>Prix</td>
 					<td>Préféré</td>
+					<td>Ingredients</td>
 					<td>Créée le</td>
 					<td>Modifiée le</td>
 				</tr>
@@ -45,11 +47,18 @@
 							<td>{{recipe.difficulty is same as (null) ? "Non renseigné" : recipe.difficulty}}</td>
 							<td>{{recipe.description}}</td>
 							<td>{{recipe.price is same as (null) ? "Non renseigné" : recipe.price}}</td>
-							<td>{{recipe.isFavorite}}</td>
+							<td>{{recipe.isFavorite is same as (0) ? "Oui" : "Non"}}</td>
+							<td>
+							<ul>
+								{% for ingredient in recipe.ingredients %}
+									<li>{{ingredient}}</li>		
+								{% endfor %}
+							</ul>
+							</td>
 							<td>{{recipe.createdAt|date("d/m/Y")}}</td>
 							<td>{{recipe.updatedAt|date("d/m/Y")}}</td>
-							<td><a href="{{path("app_recipes_edit", {id: recipe.id})}}">Modifier</a></td>
-							<td><a href="{{path("app_recipes_delete", {id: recipe.id})}}">Supprimer</a></td>
+							<td><a class="btn" href="{{path("app_recipes_edit", {id: recipe.id})}}">Modifier</a></td>
+							<td><a class="delete-btn btn" href="{{path("app_recipes_delete", {id: recipe.id})}}">Supprimer</a></td>
 						</tr>
 					{% endfor %}
 				</tbody>
