@@ -1,0 +1,33 @@
+{# templates/login/index.html.twig #}
+{% extends 'admin-panel-base.html.twig' %}
+
+{# ... #}
+
+{% block body %}
+    {% if error %}
+        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+    <form action="{{ path('app_login') }}" method="post">
+        <label for="username" class="form-label">Email:</label>
+        <input class="form-control" type="text" id="username" name="_username" value="{{ last_user_name }}" required>
+
+        <label for="password" class="form-label">Mot de passe:</label>
+        <input class="form-control" type="password" id="password" name="_password" required>
+
+        {# If you want to control the URL the user is redirected to on success
+        <input type="hidden" name="_target_path" value="/account"> #}
+
+        <button type="submit" class="btn">Se connecter</button>
+        {% for message in app.flashes("success") %}
+            <div class="alert alert-success">
+                {{message}}
+            </div>
+        {% endfor %}
+        {% if error %}
+            <div class="alert alert-dismissible alert-danger"> {{error.messageKey|trans(error.messageData, 'security')}}
+        {% endif %}
+
+        
+    </form>
+{% endblock %}

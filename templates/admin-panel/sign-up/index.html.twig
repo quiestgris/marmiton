@@ -1,0 +1,20 @@
+{% extends 'admin-panel-base.html.twig' %}
+
+{% block title %}Hello IngredientController!
+{% endblock %}
+{% block head %}
+	<link rel="stylesheet" href="{{asset("styles/ingredients/styles.css")}}">
+{% endblock %}
+
+{% block body %}
+<div>
+    {% if not is_granted("ROLE_USER") %}
+    <h1>
+        Formulaire d'inscription
+    </h1>
+    {{form(form)}}
+    {% else %}
+        <h1>Page n'est pas trouvée</h1>
+    {% endif %}
+</div>
+</div>{% endblock %}

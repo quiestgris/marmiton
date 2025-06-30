@@ -2,14 +2,16 @@
 
 namespace App\Entity;
 
-use App\Repository\AdminRepository;
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use App\Repository\AdminRepository;
 
+#[UniqueEntity('email')]
 #[ORM\Entity(repositoryClass: AdminRepository::class)]
-#[ORM\Table(name: '`admin`')]
-#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
+#[ORM\EntityListeners(['App\EntityListener\UserListener'])]
 class Admin implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -17,24 +19,78 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 180)]
+    #[ORM\Column(length: 50)]
+    #[Assert\NotBlank()]
+    #[Assert\Length(min:2, max: 50)]
+    private ?string $name = null;
+
+    #[Assert\Length(min:2, max: 50)]
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $pseudonyme = null;
+
+    #[ORM\Column(length: 300, nullable: true)]
+    private ?string $password = null;
+
+    #[ORM\Column]
+    #[Assert\NotNull()]
+    private ?array $roles = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\Column(length: 50)]
+    #[Assert\Email()]
     private ?string $email = null;
 
-    /**
-     * @var list<string> The user roles
-     */
-    #[ORM\Column]
-    private array $roles = [];
+    
 
-    /**
-     * @var string The hashed password
-     */
-    #[ORM\Column]
-    private ?string $password = null;
+    public function __construct() {
+        
+        $this->roles = ["ROLE_USER"];
+        $this->createdAt = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): static
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+
+
+    public function getPseudonyme(): ?string
+    {
+        return $this->pseudonyme;
+    }
+
+    public function setPseudonyme(?string $pseudonyme): static
+    {
+        $this->pseudonyme = $pseudonyme;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
     }
 
     public function getEmail(): ?string
@@ -49,59 +105,45 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
-    public function getUserIdentifier(): string
-    {
-        return (string) $this->email;
+    public function getPlainPassword() :string {
+        return $this->plainPassword;
     }
 
-    /**
-     * @see UserInterface
-     */
-    public function getRoles(): array
-    {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
-    }
-
-    /**
-     * @param list<string> $roles
-     */
-    public function setRoles(array $roles): static
-    {
-        $this->roles = $roles;
+    public function setPlainPassword($plainPassword) :static {
+        $this->plainPassword = $plainPassword;
 
         return $this;
     }
 
-    /**
-     * @see PasswordAuthenticatedUserInterface
-     */
+    public function getRoles() :array {
+        return $this->roles;
+    }
+
+    public function setRoles(array $roles) :static {
+        $this->roles = $roles;
+
+        return $this;
+    } 
+
+    public function eraseCredentials(): void
+    {
+        // Ici tu peux nettoyer des données sensibles
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->email; // ou username, selon ton app
+    }
+
     public function getPassword(): ?string
     {
         return $this->password;
     }
 
-    public function setPassword(string $password): static
-    {
+    public function setPassword($password) :static {
         $this->password = $password;
 
         return $this;
     }
 
-    /**
-     * @see UserInterface
-     */
-    public function eraseCredentials(): void
-    {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
-    }
 }
