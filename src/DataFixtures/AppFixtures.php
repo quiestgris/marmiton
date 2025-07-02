@@ -25,7 +25,18 @@ class AppFixtures extends Fixture
     }
 
     public function load(ObjectManager $manager): void
-    {
+    {   
+        $users = [];
+        for ($i=1; $i < 50 ; $i++) { 
+            $admin = new Admin();
+            
+            $admin->setName($this->faker->email())
+                    ->setPseudonyme(mt_rand(0,1) === 1 ? $this->faker->firstName(): null)
+                    ->setEmail($this->faker->email())
+                    ->setPassword("password");
+            $users[] = $admin;
+            $manager->persist($admin);
+        }
         $ingredients = [];
         for ($i=1; $i < 50 ; $i++) { 
             $ingredient = new Ingredient();
@@ -53,20 +64,8 @@ class AppFixtures extends Fixture
             }
             $manager->persist($recipe);
         }
-
-        for ($i=1; $i < 50 ; $i++) { 
-            $admin = new Admin();
-
-            
-            
-            $admin->setName($this->faker->email())
-                    ->setPseudonyme(mt_rand(0,1) === 1 ? $this->faker->firstName(): null)
-                    ->setEmail($this->faker->email())
-                    ->setPassword("password");
-                    
-            $manager->persist($admin);
-        }
-        $manager->flush();
+                $manager->flush();
+        
     }
 
 }

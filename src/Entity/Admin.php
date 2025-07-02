@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
@@ -28,8 +30,10 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $pseudonyme = null;
 
-    #[ORM\Column(length: 300, nullable: true)]
+    #[ORM\Column(length: 600, nullable: true)]
     private ?string $password = null;
+
+    private ?string $plainPassword = null;
 
     #[ORM\Column]
     #[Assert\NotNull()]
@@ -42,12 +46,19 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Email()]
     private ?string $email = null;
 
+    /**
+     * @var Collection<int, Ingredient>
+     */
+    #[ORM\OneToMany(targetEntity: Ingredient::class, mappedBy: 'user', orphanRemoval: true)]
+    private Collection $ingredients;
+
     
 
     public function __construct() {
         
         $this->roles = ["ROLE_USER"];
         $this->createdAt = new \DateTimeImmutable();
+        $this->ingredients = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -105,7 +116,7 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getPlainPassword() :string {
+    public function getPlainPassword() {
         return $this->plainPassword;
     }
 
@@ -142,6 +153,36 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setPassword($password) :static {
         $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Ingredient>
+     */
+    public function getIngredients(): Collection
+    {
+        return $this->ingredients;
+    }
+
+    public function addIngredient(Ingredient $ingredient): static
+    {
+        if (!$this->ingredients->contains($ingredient)) {
+            $this->ingredients->add($ingredient);
+            $ingredient->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIngredient(Ingredient $ingredient): static
+    {
+        if ($this->ingredients->removeElement($ingredient)) {
+            // set the owning side to null (unless already changed)
+            if ($ingredient->getUser() === $this) {
+                $ingredient->setUser(null);
+            }
+        }
 
         return $this;
     }

@@ -9,6 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
 class AdminTypeForm extends AbstractType
 {
@@ -39,13 +40,26 @@ class AdminTypeForm extends AbstractType
                     
                 ],
                 "required" => false,
-                'label' => 'Pseudonym',
+                'label' => 'Pseudonyme',
+                'label_attr' => [
+                    'class' => 'form_label'
+                ],
+                "constraints" => [
+
+                    new Assert\Length(['min' => 2, 'max' => 50]) 
+                ]
+                ])
+                ->add('plainPassword', PasswordType::class, [
+                "attr" => [
+                    'class' => 'form-control',
+                    
+                ],
+                'label' => 'Mot de passe',
                 'label_attr' => [
                     'class' => 'form_label'
                 ],
                 "constraints" => [
                     new Assert\NotBlank(),
-                    new Assert\Length(['min' => 2, 'max' => 50]) 
                 ]
                 ])
                 ->add('submit', SubmitType::class, [

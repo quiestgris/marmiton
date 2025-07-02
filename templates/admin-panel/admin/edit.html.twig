@@ -11,6 +11,11 @@
     <h1>
         Modification de votre profil
     </h1>
+    {% for message in app.flashes('warning') %}
+        <div class="alert alert-warning">
+            {{message}}
+        </div>
+    {% endfor %}
     {{form(form)}}
 </div>
 </div>{% endblock %}
