@@ -58,8 +58,8 @@ class AppFixtures extends Fixture
                     ->setDescription($this->faker->text(300))
                     ->setPrice(mt_rand(0,1) == 1 ? mt_rand(1,1000):null)
                     ->setIsFavorite(mt_rand(0,1) ==1 ? true:false);
-            
-            $recipe->setPrice(mt_rand(0,200));
+                     $recipe->setUser($users[mt_rand(0, count($users) - 1)]);
+                     $recipe->setPrice(mt_rand(0,200));
 
             for ($j = 0; $j < mt_rand(5,15); $j++) {
                 $recipe->addIngredient($ingredients[mt_rand(0, count($ingredients) - 1)]);

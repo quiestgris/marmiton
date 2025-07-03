@@ -41,6 +41,7 @@ class Ingredient
     private ?Admin $user = null;
 
     public function __construct() {
+        
         $this->createdAt = new \DateTimeImmutable();
     }
 

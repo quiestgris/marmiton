@@ -30,8 +30,8 @@ class Recipe
     #[Assert\Length(
         min: 2,
         max: 40,
-        minMessage: "Le nom de tecette doit comporter au moins 2 caractères",
-        maxMessage: "Le nom de tecette doit comporter au maximum 50 caractères",
+        minMessage: "Le nom de recette doit comporter au moins 2 caractères",
+        maxMessage: "Le nom de recette doit comporter au maximum 50 caractères",
     )]
     private ?string $name = null;
 
@@ -74,6 +74,11 @@ class Recipe
         $this->created_at = new DateTimeImmutable();
         $this->updated_at = new DateTimeImmutable();
     }
+
+    #[ORM\ManyToOne(inversedBy: 'ingredients')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Admin $user = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -203,6 +208,18 @@ class Recipe
     public function setUpdatedAt(\DateTimeImmutable $updated_at): static
     {
         $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    public function getUser(): ?Admin
+    {
+        return $this->user;
+    }
+
+    public function setUser(?Admin $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

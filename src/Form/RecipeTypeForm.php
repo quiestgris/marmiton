@@ -16,12 +16,20 @@ use Symfony\Component\Form\Extension\Core\Type\TextType as TypeTextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use App\Repository\IngredientRepository;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
 
 class RecipeTypeForm extends AbstractType
 {
+    private $token;
+
+    public function __construct(TokenStorageInterface $token)
+    {
+        $this->token = $token;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -46,9 +54,10 @@ class RecipeTypeForm extends AbstractType
                 "label_attr" => [
                     "class" => "form-label"
                 ],
+                "required" => false,
                 "constraints" => [
                     new Assert\Positive(),
-                    new Assert\NotBlank()
+                    // new Assert\NotBlank()
                 ]
             ])
             ->add('people_nb', IntegerType::class, [
@@ -103,6 +112,7 @@ class RecipeTypeForm extends AbstractType
                 "label_attr" => [
                     "class" => "form-label"
                 ],
+                "required" => false,
                 "constraints" => [
                     new Assert\Positive(),
                     new Assert\LessThan(128)
@@ -127,11 +137,14 @@ class RecipeTypeForm extends AbstractType
                 "class" => Ingredient::class,
                 'query_builder' => function (IngredientRepository $r) {
                     return $r->createQueryBuilder('i')
-                            ->orderBy('i.name',"ASC");
+                            ->where("i.user = :user")
+                            ->orderBy('i.name',"ASC")
+                            ->setParameter("user", $this->token->getToken()->getUser());
                 },
                 'choice_label' => 'name',
                 'multiple' => 'true',
                 'expanded' => 'true',
+                "required" => false,
             ])
             ->add("submit", SubmitType::class, [
                 "attr" => [

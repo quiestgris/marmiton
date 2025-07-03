@@ -11,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 /**
  * This function shows all ingredients and information about them
@@ -19,9 +19,10 @@ use Symfony\Component\Routing\Attribute\Route;
 final class RecipeController extends AbstractController
 {
     #[Route('recipes/show', name: 'app_recipes', methods: ["GET"])]
-    public function index(RecipeRepository $ingredientRepository, Request $request, PaginatorInterface $paginator, EntityManagerInterface $em): Response
+    #[IsGranted("ROLES_USER")]
+    public function index(RecipeRepository $recipeRepository, Request $request, PaginatorInterface $paginator, EntityManagerInterface $em): Response
     {
-        $recipes = $paginator->paginate($ingredientRepository->findAll(),
+        $recipes = $paginator->paginate($recipeRepository->findBy(['user' => $this->getUser()]),
         $request->query->getInt("page", 1), 15);
 
         return $this->render('admin-panel/recipe/index.html.twig', [
@@ -30,6 +31,7 @@ final class RecipeController extends AbstractController
     }
 
     #[Route('recipes/new', name: 'app_recipes_create', methods: ["GET","POST"])]
+    #[IsGranted("ROLES_USER")]
     public function new(Request $request, EntityManagerInterface $manager) :Response {
 
         $recipe = new Recipe();
@@ -39,6 +41,7 @@ final class RecipeController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()) {
             $recipe = $form->getData();
+            $recipe->setUser($this->getUser());
 
             $manager->persist($recipe);
             $manager->flush();
@@ -55,6 +58,7 @@ final class RecipeController extends AbstractController
         ]);
     }
     #[Route('recipes/edit/{id}', name: 'app_recipes_edit', methods: ["GET","POST"])]
+    #[IsGranted("ROLES_USER")]
     public function edit(Request $request, EntityManagerInterface $manager, Recipe $recipe) :Response {
 
         
@@ -78,6 +82,7 @@ final class RecipeController extends AbstractController
         ]);
     }
     #[Route('recipes/delete/{id}', name: 'app_recipes_delete', methods: ["GET","POST"])]
+    #[IsGranted("ROLES_USER")]
     public function delete(Request $request, EntityManagerInterface $manager, Recipe $recipe) :Response {
 
         if(!$recipe) {
