@@ -22,7 +22,7 @@ final class IngredientController extends AbstractController
     #[Route('ingredients/show', name: 'app_ingredients', methods: ["GET"])]
     public function index(IngredientRepository $ingredientRepository, Request $request, PaginatorInterface $paginator, EntityManagerInterface $em): Response
     {
-        $ingredients = $paginator->paginate($ingredientRepository->findAll(),
+        $ingredients = $paginator->paginate($ingredientRepository->findBy(['user' => $this-getUser()]),
         $request->query->getInt("page", 1), 15);
 
         return $this->render('admin-panel/ingredient/index.html.twig', [

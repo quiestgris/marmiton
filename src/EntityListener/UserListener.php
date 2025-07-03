@@ -39,7 +39,7 @@ public function encodePassword(Admin $user)
     $user->setPassword(
         $this->hasher->hashPassword(
             $user,
-            $user->getPlainPAssword()
+            $user->getPlainPassword()
         )
         );
 

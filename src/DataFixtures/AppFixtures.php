@@ -18,11 +18,13 @@ class AppFixtures extends Fixture
 
 
     private Generator $faker;
+    private UserPasswordHasherInterface $hasher;
 
-    public function __construct() 
-    {
-        $this->faker = Factory::create("fr_FR");
-    }
+    public function __construct(UserPasswordHasherInterface $hasher)
+{
+    $this->faker = Factory::create("fr_FR");
+    $this->hasher = $hasher;
+}
 
     public function load(ObjectManager $manager): void
     {   
@@ -33,7 +35,7 @@ class AppFixtures extends Fixture
             $admin->setName($this->faker->email())
                     ->setPseudonyme(mt_rand(0,1) === 1 ? $this->faker->firstName(): null)
                     ->setEmail($this->faker->email())
-                    ->setPassword("password");
+                    ->setPassword($this->hasher->hashPassword($admin, 'password'));
             $users[] = $admin;
             $manager->persist($admin);
         }
@@ -42,6 +44,7 @@ class AppFixtures extends Fixture
             $ingredient = new Ingredient();
             $ingredient->setName($this->faker->word());
             $ingredient->setPrice(mt_rand(0,200));
+            $ingredient->setUser($users[mt_rand(0, count($users) - 1)]);
             $ingredients[] = $ingredient;
             $manager->persist($ingredient);
         }
