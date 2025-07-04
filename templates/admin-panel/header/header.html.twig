@@ -1,17 +1,16 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-    <div>
-        <a href="{{path("app_ingredients")}}">Liste d'ingrédients</a>
-        <a href="{{path("app_recipes")}}">Liste de recettes</a>
-        <a href="{{path("app_ingredients_create")}}">Ajouter un ingrédient</a>
-        <a href="{{path("app_recipes_create")}}">Ajouter une recette</a>
-        {% if is_granted("ROLE_USER") %}
-            <a href="{{path("app_user_edit", {id: app.user.id})}}">Modifier le profil</a>
-            <a href="{{path("app_user_edit_password", {id: app.user.id})}}">Modifier le mot de passe</a>
-            <a href="{{path("app_logout")}}">Se déconnecter</a>
-
-        {% endif %}
+{% if is_granted("ROLE_USER") %}
+    <nav>
+        <a class="nav-item"  href="{{path("app_ingredients")}}">Liste d'ingrédients</a>
+        <a class="nav-item"  href="{{path("app_recipes")}}">Liste de recettes</a>
+        <a class="nav-item"  href="{{path("app_ingredients_create")}}">Ajouter un ingrédient</a>
+        <a class="nav-item"  href="{{path("app_recipes_create")}}">Ajouter une recette</a>
+            <a class="nav-item" href="{{path("app_user_edit", {id: app.user.id})}}">Modifier le profil</a>
+            <a class="nav-item" href="{{path("app_user_edit_password", {id: app.user.id})}}">Modifier le mot de passe</a>
+            <a class="nav-item logout-btn" href="{{path("app_logout")}}">Se déconnecter</a>
         
-    </div>
+    </nav>
+    {% endif %}
 {% endblock %}

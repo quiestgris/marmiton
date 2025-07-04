@@ -20,7 +20,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class IngredientController extends AbstractController
 {
     #[Route('ingredients/show', name: 'app_ingredients', methods: ["GET"])]
-    #[IsGranted("ROLES_USER")]
+    // #[IsGranted("ROLES_USER")]
     public function index(IngredientRepository $ingredientRepository, Request $request, PaginatorInterface $paginator, EntityManagerInterface $em): Response
     {
         $ingredients = $paginator->paginate($ingredientRepository->findBy(['user' => $this->getUser()]),
@@ -32,7 +32,7 @@ final class IngredientController extends AbstractController
     }
 
     #[Route('ingredients/new', name: 'app_ingredients_create', methods: ["GET","POST"])]
-    #[IsGranted("ROLES_USER")]
+    // #[IsGranted("ROLES_USER")]
     public function new(Request $request, EntityManagerInterface $manager) :Response {
 
         $ingredient = new Ingredient();
@@ -60,7 +60,7 @@ final class IngredientController extends AbstractController
         ]);
     }
     #[Route('ingredients/edit/{id}', name: 'app_ingredients_edit', methods: ["GET","POST"])]
-    #[IsGranted("ROLES_USER")]
+    // #[IsGranted("ROLES_USER")]
     public function edit(Request $request, EntityManagerInterface $manager, Ingredient $ingredient) :Response {
 
         
@@ -84,7 +84,7 @@ final class IngredientController extends AbstractController
         ]);
     }
     #[Route('ingredients/delete/{id}', name: 'app_ingredients_delete', methods: ["GET","POST"])]
-    #[IsGranted("ROLES_USER")]
+    // #[IsGranted("ROLES_USER")]
     public function delete(Request $request, EntityManagerInterface $manager, Ingredient $ingredient) :Response {
 
         if(!$ingredient) {

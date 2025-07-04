@@ -1,0 +1,20 @@
+nav {
+    background-color: brown;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+
+
+.nav-item {
+    border-radius: 8px;
+    font-size: 22px;
+    background-color: #3a1111;
+}
+
+.logout-btn  {
+    background-color: red;
+    color: black;
+}

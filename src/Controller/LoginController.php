@@ -14,7 +14,7 @@ use Exception;
 
 final class LoginController extends AbstractController
 {
-    #[Route('/login', name: 'app_login', methods: ['GET', "POST"])]
+    #[Route('/', name: 'app_login', methods: ['GET', "POST"])]
     public function index(AuthenticationUtils $authenticationUtils): Response
     {
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -27,8 +27,11 @@ final class LoginController extends AbstractController
         ]);
     }
     #[Route("/logout", name: "app_logout")]
-    public function logout() :never {
+    public function logout() :Response {
+        
         throw new Exception("Activate logout in security.yaml");
+
+        return $this->redirectToRoute("app_login");
     }
     #[Route('/sign-up', name: 'app_sign_up', methods: ["GET", "POST"])]
     public function signUp(Request $request, EntityManagerInterface $manager) :Response {

@@ -19,7 +19,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class RecipeController extends AbstractController
 {
     #[Route('recipes/show', name: 'app_recipes', methods: ["GET"])]
-    #[IsGranted("ROLES_USER")]
+    // #[IsGranted("ROLES_USER")]
     public function index(RecipeRepository $recipeRepository, Request $request, PaginatorInterface $paginator, EntityManagerInterface $em): Response
     {
         $recipes = $paginator->paginate($recipeRepository->findBy(['user' => $this->getUser()]),
@@ -31,7 +31,7 @@ final class RecipeController extends AbstractController
     }
 
     #[Route('recipes/new', name: 'app_recipes_create', methods: ["GET","POST"])]
-    #[IsGranted("ROLES_USER")]
+    // #[IsGranted("ROLES_USER")]
     public function new(Request $request, EntityManagerInterface $manager) :Response {
 
         $recipe = new Recipe();
@@ -58,7 +58,7 @@ final class RecipeController extends AbstractController
         ]);
     }
     #[Route('recipes/edit/{id}', name: 'app_recipes_edit', methods: ["GET","POST"])]
-    #[IsGranted("ROLES_USER")]
+    // #[IsGranted("ROLES_USER")]
     public function edit(Request $request, EntityManagerInterface $manager, Recipe $recipe) :Response {
 
         
@@ -82,7 +82,7 @@ final class RecipeController extends AbstractController
         ]);
     }
     #[Route('recipes/delete/{id}', name: 'app_recipes_delete', methods: ["GET","POST"])]
-    #[IsGranted("ROLES_USER")]
+    // #[IsGranted("ROLES_USER")]
     public function delete(Request $request, EntityManagerInterface $manager, Recipe $recipe) :Response {
 
         if(!$recipe) {
